@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import ApiKey from '../models/Test/ApiKeys';
+import ApiKey from '../models/tests/ApiKeys';
 
 // 🔐 Random generator (premium)
 const randomToken = (length = 32) =>

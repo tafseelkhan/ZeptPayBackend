@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import Merchant from '../models/Test/AirCaptured/merchant/merchantOnboard';
+import Merchant from '../models/tests/ZeptCaptured/merchant/merchantOnboard';
 import dotenv from 'dotenv';
 
 dotenv.config();

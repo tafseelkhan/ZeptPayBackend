@@ -5,13 +5,13 @@ import { connectDB } from "./config/db";
 
 // Routes
 import authRoutes from "./routes/auth/authRoutes";
-import apiKeyRoutes from "./routes/Test/updatePermissions";
-import testpaymentRoutes from "./routes/Test/Payment/testpayment";
-import CountryRoutes from "./routes/Test/Payment/countryRoute";
-import developerRoutes from "./routes/Test/AirCaptured/airCaptured";
-import merchantOnboardRoutes from "./routes/Test/AirCaptured/merchant/merchantOnboard";
-import webhookStatusRoutes from "./routes/Test/Webhook/webhookStatusRoutes";
-import createWebhookRoutes from "./routes/Test/Webhook/createWebhook";
+import apiKeyRoutes from "./routes/tests/updatePermissions";
+import testpaymentRoutes from "./routes/tests/Payment/testpayment";
+import CountryRoutes from "./routes/tests/Payment/countryRoute";
+import developerRoutes from "./routes/tests/zeptcaptured/zeptcaptured";
+import merchantOnboardRoutes from "./routes/tests/zeptcaptured/merchant/merchantOnboard";
+import webhookStatusRoutes from "./routes/tests/Webhook/webhookStatusRoutes";
+import createWebhookRoutes from "./routes/tests/Webhook/createWebhook";
 
 dotenv.config();
 connectDB();
