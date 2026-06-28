@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import Merchant from "../../../../models/tests/ZeptCaptured/merchant/merchantOnboard";
+import Merchant from "../../../../models/tests/zeptcaptured/merchant/merchantOnboard";
 import { bucket } from "../../../../firebase/firebase";
 import mongoose from "mongoose";
 import User from "../../../../models/auth/User";
-import DeveloperOnboarding from "../../../../models/tests/ZeptCaptured/zeptcaptured";
+import DeveloperOnboarding from "../../../../models/tests/zeptcaptured/zeptCaptured";
 import ApiKey from "../../../../models/tests/ApiKeys";
 import { v4 as uuidv4 } from "uuid";
 import { generateToken } from "../../../../config/jwt";
@@ -61,7 +61,7 @@ async function uploadBase64Document(base64DataUrl: string, docType: string) {
 
   // ✅ Get correct file extension from MIME type
   const extension = getExtensionFromMimeType(mimeType);
-  const fileName = `ZeptPay/MerchantDocs/${uuidv4()}${extension}`;
+  const fileName = `ZeptPay/merchantDocs/${uuidv4()}${extension}`;
   const file = bucket.file(fileName);
 
   // ✅ Upload with correct contentType

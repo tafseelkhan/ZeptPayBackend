@@ -8,7 +8,7 @@ import authRoutes from "./routes/auth/authRoutes";
 import apiKeyRoutes from "./routes/tests/updatePermissions";
 import testpaymentRoutes from "./routes/tests/Payment/testpayment";
 import CountryRoutes from "./routes/tests/Payment/countryRoute";
-import developerRoutes from "./routes/tests/zeptcaptured/zeptcaptured";
+import developerRoutes from "./routes/tests/zeptcaptured/zeptCaptured";
 import merchantOnboardRoutes from "./routes/tests/zeptcaptured/merchant/merchantOnboard";
 import webhookStatusRoutes from "./routes/tests/Webhook/webhookStatusRoutes";
 import createWebhookRoutes from "./routes/tests/Webhook/createWebhook";

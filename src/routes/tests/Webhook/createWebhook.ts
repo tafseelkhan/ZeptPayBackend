@@ -14,7 +14,7 @@ router.post("/create", authMiddleware, createWebhook);
 
 router.get("/me", authMiddleware, getWebhook);
 
-router.put("/events", authMiddleware, updateWebhookEvents);
+router.put("/update", authMiddleware, updateWebhookEvents);
 
 router.put("/status", authMiddleware, toggleWebhookStatus);
 

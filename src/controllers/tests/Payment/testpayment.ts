@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 
-import MerchantOnboarding from "../../../models/tests/ZeptCaptured/merchant/merchantOnboard";
+import MerchantOnboarding from "../../../models/tests/zeptcaptured/merchant/merchantOnboard";
 import User from "../../../models/auth/User";
 import ZeptPayTransaction from "../../../models/tests/payments/ZeptPayTransaction";
-import ClientKey from "../../../models/tests/ZeptCaptured/zeptcaptured";
+import ClientKey from "../../../models/tests/zeptcaptured/zeptCaptured";
 import SecretKey from "../../../models/tests/ApiKeys";
 import { handleWebhookByStatus } from "../Webhook/handleWebhookByStatus";
 

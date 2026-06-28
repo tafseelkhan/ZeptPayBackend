@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IMerchant extends Document {
   vendorCodeUID: string;
@@ -137,5 +137,9 @@ const MerchantSchema = new Schema<IMerchant>(
   },
   { timestamps: true },
 );
+// ✅ FIX: Check if model already exists before creating
+const Merchant =
+  (mongoose.models.Merchant as Model<IMerchant>) ||
+  mongoose.model<IMerchant>("Merchant", MerchantSchema);
 
-export default mongoose.model<IMerchant>("Merchant", MerchantSchema);
+export default Merchant;
