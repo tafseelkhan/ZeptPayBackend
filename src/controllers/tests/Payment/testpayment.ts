@@ -43,7 +43,7 @@ interface ErrorResponse {
 interface MerchantOnboardingDocument {
   _id: mongoose.Types.ObjectId;
   merchantUserId: string;
-  vendorCodeUID: string;
+  zeptPayAccountId: string;
   developerUserId: string;
   merchantDID: string;
   walletId: string;
@@ -180,27 +180,27 @@ const authenticateRequest = async (
   return await verifyDeveloperKeys(clientKey, secretKey);
 };
 
-// ✅ UPDATED: vendorCodeUID se merchant dhundo, merchantUserId se nahi
-const verifyMerchant = async (vendorCodeUID: string) => {
+// ✅ UPDATED: zeptPayAccountId se merchant dhundo, merchantUserId se nahi
+const verifyMerchant = async (zeptPayAccountId: string) => {
   console.log(
-    "🏪 [MERCHANT] Verifying merchant — vendorCodeUID:",
-    vendorCodeUID,
+    "🏪 [MERCHANT] Verifying merchant — zeptPayAccountId:",
+    zeptPayAccountId,
   );
 
-  // ✅ vendorCodeUID se find karo
+  // ✅ zeptPayAccountId se find karo
   const merchantOnboarding = (await MerchantOnboarding.findOne({
-    vendorCodeUID,
+    zeptPayAccountId,
   }).lean()) as MerchantOnboardingDocument | null;
 
   if (!merchantOnboarding) {
     console.error(
-      "❌ [MERCHANT] Merchant onboarding not found for vendorCodeUID:",
-      vendorCodeUID,
+      "❌ [MERCHANT] Merchant onboarding not found for zeptPayAccountId:",
+      zeptPayAccountId,
     );
     throw new Error("MERCHANT_ONBOARDING_NOT_FOUND");
   }
   console.log("✅ [MERCHANT] Onboarding found:");
-  console.log("   vendorCodeUID:", merchantOnboarding.vendorCodeUID);
+  console.log("   zeptPayAccountId:", merchantOnboarding.zeptPayAccountId);
   console.log("   merchantUserId:", merchantOnboarding.merchantUserId);
   console.log("   merchantDID:", merchantOnboarding.merchantDID);
   console.log("   walletId:", merchantOnboarding.walletId);
@@ -292,9 +292,9 @@ export const createTestPayment = async (
       throw error;
     }
 
-    // ✅ merchantUserId ki jagah vendorCodeUID aayega body mein
+    // ✅ merchantUserId ki jagah zeptPayAccountId aayega body mein
     const {
-      vendorCodeUID,
+      zeptPayAccountId,
       payer,
       appName,
       amount,
@@ -303,14 +303,14 @@ export const createTestPayment = async (
 
     // STEP 2: Validate
     console.log("\n📋 [CREATE_PAYMENT] STEP 2 — Validating required fields...");
-    console.log("📋 [CREATE_PAYMENT] vendorCodeUID:", vendorCodeUID);
+    console.log("📋 [CREATE_PAYMENT] zeptPayAccountId:", zeptPayAccountId);
     console.log("📋 [CREATE_PAYMENT] appName:", appName);
     console.log("📋 [CREATE_PAYMENT] amount:", amount, "| currency:", currency);
     console.log("📋 [CREATE_PAYMENT] payer:", JSON.stringify(payer));
 
-    // ✅ vendorCodeUID required field mein
+    // ✅ zeptPayAccountId required field mein
     const missingFields = validateRequiredFields(req.body, [
-      "vendorCodeUID",
+      "zeptPayAccountId",
       "payer.userId",
       "payer.name",
       "payer.email",
@@ -344,13 +344,13 @@ export const createTestPayment = async (
     }
     console.log("✅ [CREATE_PAYMENT] Amount valid:", amount);
 
-    // STEP 3: Verify merchant via vendorCodeUID
+    // STEP 3: Verify merchant via zeptPayAccountId
     console.log(
-      "\n🏪 [CREATE_PAYMENT] STEP 3 — Verifying merchant via vendorCodeUID...",
+      "\n🏪 [CREATE_PAYMENT] STEP 3 — Verifying merchant via zeptPayAccountId...",
     );
     let merchant;
     try {
-      merchant = await verifyMerchant(vendorCodeUID);
+      merchant = await verifyMerchant(zeptPayAccountId);
       console.log(
         "✅ [CREATE_PAYMENT] Merchant verified —",
         merchant.user.name,
@@ -367,7 +367,7 @@ export const createTestPayment = async (
           .status(404)
           .json(
             createErrorResponse(
-              "Merchant not found for given vendorCodeUID",
+              "Merchant not found for given zeptPayAccountId",
               "MERCHANT_NOT_FOUND",
               404,
             ),
@@ -412,7 +412,7 @@ export const createTestPayment = async (
       meta: {
         testMode: true,
         appName,
-        vendorCodeUID, // ✅ vendorCodeUID bhi save karo meta mein
+        zeptPayAccountId, // ✅ zeptPayAccountId bhi save karo meta mein
         merchantDID: merchant.onboarding.merchantDID,
         walletId: merchant.onboarding.walletId,
       },
@@ -443,7 +443,7 @@ export const createTestPayment = async (
 
     console.log("\n🎉 [CREATE_PAYMENT] Payment created successfully:", {
       transactionId,
-      vendorCodeUID,
+      zeptPayAccountId,
       merchantUserId: merchant.merchantUserId,
       merchantName: merchant.user.name,
       payerId: payer.userId,
@@ -543,7 +543,7 @@ export const createAutoPayTransaction = async (
     }
 
     const {
-      vendorCodeUID,
+      zeptPayAccountId,
       payer,
       appName,
       amount,
@@ -555,7 +555,7 @@ export const createAutoPayTransaction = async (
 
     // STEP 2: Validate
     console.log("\n📋 [AUTOPAY] STEP 2 — Validating required fields...");
-    console.log("📋 [AUTOPAY] vendorCodeUID:", vendorCodeUID);
+    console.log("📋 [AUTOPAY] zeptPayAccountId:", zeptPayAccountId);
     console.log("📋 [AUTOPAY] amount:", amount, "| currency:", currency);
     console.log("📋 [AUTOPAY] frequency:", frequency);
     console.log(
@@ -567,7 +567,7 @@ export const createAutoPayTransaction = async (
     console.log("📋 [AUTOPAY] payer:", JSON.stringify(payer));
 
     const missingFields = validateRequiredFields(req.body, [
-      "vendorCodeUID",
+      "zeptPayAccountId",
       "payer.userId",
       "payer.name",
       "payer.email",
@@ -616,11 +616,11 @@ export const createAutoPayTransaction = async (
 
     // STEP 3: Verify merchant
     console.log(
-      "\n🏪 [AUTOPAY] STEP 3 — Verifying merchant via vendorCodeUID...",
+      "\n🏪 [AUTOPAY] STEP 3 — Verifying merchant via zeptPayAccountId...",
     );
     let merchant;
     try {
-      merchant = await verifyMerchant(vendorCodeUID);
+      merchant = await verifyMerchant(zeptPayAccountId);
       console.log(
         "✅ [AUTOPAY] Merchant verified —",
         merchant.user.name,
@@ -637,7 +637,7 @@ export const createAutoPayTransaction = async (
           .status(404)
           .json(
             createErrorResponse(
-              "Merchant not found for given vendorCodeUID",
+              "Merchant not found for given zeptPayAccountId",
               "MERCHANT_NOT_FOUND",
               404,
             ),
@@ -704,7 +704,7 @@ export const createAutoPayTransaction = async (
       meta: {
         testMode: true,
         appName,
-        vendorCodeUID,
+        zeptPayAccountId,
         mandateId,
         frequency,
         startDate,
@@ -728,7 +728,7 @@ export const createAutoPayTransaction = async (
     console.log("\n🎉 [AUTOPAY] Auto-pay created successfully:", {
       transactionId,
       mandateId,
-      vendorCodeUID,
+      zeptPayAccountId,
       merchantUserId: merchant.merchantUserId,
       merchantName: merchant.user.name,
       payerId: payer.userId,
@@ -1041,7 +1041,7 @@ export const generateTestQR = async (
     }
 
     const {
-      vendorCodeUID,
+      zeptPayAccountId,
       payer,
       appName,
       amount,
@@ -1050,12 +1050,12 @@ export const generateTestQR = async (
 
     // STEP 2: Validate
     console.log("\n📋 [GEN_QR] STEP 2 — Validating required fields...");
-    console.log("📋 [GEN_QR] vendorCodeUID:", vendorCodeUID);
+    console.log("📋 [GEN_QR] zeptPayAccountId:", zeptPayAccountId);
     console.log("📋 [GEN_QR] amount:", amount, "| currency:", currency);
     console.log("📋 [GEN_QR] payer:", JSON.stringify(payer));
 
     const missingFields = validateRequiredFields(req.body, [
-      "vendorCodeUID",
+      "zeptPayAccountId",
       "payer.userId",
       "payer.name",
       "payer.email",
@@ -1091,11 +1091,11 @@ export const generateTestQR = async (
 
     // STEP 3: Verify merchant
     console.log(
-      "\n🏪 [GEN_QR] STEP 3 — Verifying merchant via vendorCodeUID...",
+      "\n🏪 [GEN_QR] STEP 3 — Verifying merchant via zeptPayAccountId...",
     );
     let merchant;
     try {
-      merchant = await verifyMerchant(vendorCodeUID);
+      merchant = await verifyMerchant(zeptPayAccountId);
       console.log(
         "✅ [GEN_QR] Merchant verified —",
         merchant.user.name,
@@ -1112,7 +1112,7 @@ export const generateTestQR = async (
           .status(404)
           .json(
             createErrorResponse(
-              "Merchant not found for given vendorCodeUID",
+              "Merchant not found for given zeptPayAccountId",
               "MERCHANT_NOT_FOUND",
               404,
             ),
@@ -1148,7 +1148,7 @@ export const generateTestQR = async (
       qrCodeId,
       merchantName: merchant.user.name,
       merchantId: merchant.merchantUserId,
-      vendorCodeUID,
+      zeptPayAccountId,
       amount,
       currency,
       intent: "PAY",
@@ -1185,7 +1185,7 @@ export const generateTestQR = async (
       meta: {
         testMode: true,
         appName,
-        vendorCodeUID,
+        zeptPayAccountId,
         qrCodeId,
         qrPayload,
         expiresAt: expiresAt.toISOString(),
@@ -1204,7 +1204,7 @@ export const generateTestQR = async (
     console.log("\n🎉 [GEN_QR] QR generated successfully:", {
       qrCodeId,
       transactionId,
-      vendorCodeUID,
+      zeptPayAccountId,
       merchantUserId: merchant.merchantUserId,
       merchantName: merchant.user.name,
       payerId: payer.userId,

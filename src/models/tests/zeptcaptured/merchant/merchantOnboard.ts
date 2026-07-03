@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IMerchant extends Document {
-  vendorCodeUID: string;
+  zeptPayAccountId: string;
   merchantName: string;
   merchantEmail: string;
   merchantPhone?: string;
@@ -65,7 +65,7 @@ export interface IMerchant extends Document {
 
 const MerchantSchema = new Schema<IMerchant>(
   {
-    vendorCodeUID: { type: String, required: true, unique: true, index: true },
+    zeptPayAccountId: { type: String, required: true, unique: true, index: true },
     merchantName: { type: String, required: true },
     merchantEmail: { type: String, required: true, lowercase: true },
     merchantPhone: { type: String, required: true },

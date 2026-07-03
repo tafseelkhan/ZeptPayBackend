@@ -109,8 +109,8 @@ function checkBankCompletion(merchant: any) {
   return !!(bank.accountHolderName && bank.accountNumber && bank.ifscCode);
 }
 
-const generateVendorCodeUID = (): string => {
-  return "VC-UID_" + crypto.randomBytes(12).toString("hex"); // e.g., VC_a1b2c3d4e5f6
+const generatezeptPayAccountId = (): string => {
+  return "ZEPTPAY-ACCO-ID_" + crypto.randomBytes(12).toString("hex"); // e.g., ZEPTPAY-ACCO-ID_a1b2c3d4e5f6
 };
 
 /**
@@ -218,10 +218,10 @@ export const createMerchant = async (req: Request, res: Response) => {
     // 🏪 Merchant creation
     const merchantDID = "zeptpay_" + new mongoose.Types.ObjectId().toString();
     const walletId = "wallet_" + new mongoose.Types.ObjectId().toString();
-    const vendorCodeUID = generateVendorCodeUID(); // ✅ Generate unique vendor code
+    const zeptPayAccountId = generatezeptPayAccountId(); // ✅ Generate unique vendor code
 
     const merchant = new Merchant({
-      vendorCodeUID, // <-- add here, // <-- add here
+      zeptPayAccountId, // <-- add here, // <-- add here
       merchantName,
       merchantEmail,
       merchantPhone,
@@ -325,7 +325,7 @@ export const createMerchant = async (req: Request, res: Response) => {
       token,
       merchant: {
         merchantId: merchant._id,
-        vendorCodeUID: merchant.vendorCodeUID, // ✅ send to frontend
+        zeptPayAccountId: merchant.zeptPayAccountId, // ✅ send to frontend
         zeptpayMerchantId: merchant.merchantDID,
         walletId: merchant.walletId,
         status: merchant.status,
@@ -396,7 +396,7 @@ export const getMerchantStatus = async (req: Request, res: Response) => {
 
     // 🔎 3️⃣ Fetch merchant
     const merchant = await Merchant.findById(merchantId).select(
-      "vendorCodeUID status kycStatus dob merchantDID walletId merchantName merchantEmail merchantPhone",
+      "zeptPayAccountId status kycStatus dob merchantDID walletId merchantName merchantEmail merchantPhone",
     );
 
     if (!merchant) {
@@ -416,7 +416,7 @@ export const getMerchantStatus = async (req: Request, res: Response) => {
       success: true,
       data: {
         merchantId: merchant._id,
-        vendorCodeUID: merchant.vendorCodeUID, // ✅ send to frontend
+        zeptPayAccountId: merchant.zeptPayAccountId, // ✅ send to frontend
         image: user?.image || null,
         status: merchant.status,
         kycStatus: merchant.kycStatus,
