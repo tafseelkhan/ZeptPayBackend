@@ -1,21 +1,22 @@
 // backend/controllers/upload.ts
 import { Request, Response } from "express";
-import admin from "firebase-admin";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
+import { getStorage } from "firebase-admin/storage";
 import path from "path";
 
 // 🔥 Step 1: Service account path
 const serviceAccountPath = path.resolve(__dirname, "../config/zeptpay/serviceAccount.json");
 
 // 🔥 Step 2: Initialize Firebase only once
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccountPath),
+if (!getApps().length) {
+  initializeApp({
+    credential: cert(serviceAccountPath),
     storageBucket: "tizzygo-os.firebasestorage.app", // ✅ Correct bucket name
   });
 }
 
 // 🔥 Step 3: Get bucket
-const bucket = admin.storage().bucket();
+const bucket = getStorage().bucket();
 
 // 🔥 Step 4: Controller to generate signed upload URL
 export const getUploadUrl = async (req: Request, res: Response) => {

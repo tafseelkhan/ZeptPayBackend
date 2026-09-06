@@ -1,12 +1,12 @@
 {
   "name": "zeptpay",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "ZeptPay is a payment gateway that allows users to make payments using various payment methods such as credit cards, debit cards, and net banking. It provides a secure and reliable platform for online transactions.",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -16,23 +16,22 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.0.10",
-    "@types/nodemailer": "^7.0.5",
+    "@types/node": "^26.4.1",
+    "@types/nodemailer": "^8.0.1",
     "nodemon": "^3.1.11",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.3"
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "firebase-admin": "^13.6.1",
+    "firebase-admin": "^14.3.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.5",
-    "nodemailer": "^7.0.12",
-    "twilio": "^5.12.0",
-    "uuid": "^13.0.0"
+    "mongoose": "^9.9.5",
+    "nodemailer": "^10.0.0",
+    "twilio": "^6.1.0",
+    "uuid": "^14.0.2"
   }
 }
